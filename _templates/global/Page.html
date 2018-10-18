@@ -1,0 +1,46 @@
+{% extends "otree/Page.html" %}
+{% load staticfiles otree %}
+
+{% comment %}
+    this file used to be called Base.html
+    If your app's templates contain this line:
+    {% extends "global/Base.html" %}
+    You should change it to:
+    {% extends "global/Page.html" %}
+{% endcomment %}
+
+{% block global_styles  %}
+<style>
+    #width50 {
+        width: 50%;
+    }
+
+    td {
+        border: 1px solid #ddd;
+        text-align: center;
+        padding: 8px;
+        font-size: 10pt;
+    }
+    th {
+        border: 1px solid #ddd;
+        text-align: center;
+        padding: 5px;
+        font-size: 10pt;
+    }
+    tr:nth-child(even){background-color: #f2f2f2;}
+    tr:hover {background-color: #ddd;}
+
+    table {
+        margin: auto;
+    }
+</style>
+
+{% endblock %}
+
+{% block global_scripts  %}
+{% block styles %}
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+{% endblock %}

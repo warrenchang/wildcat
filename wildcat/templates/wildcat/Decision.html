@@ -1,0 +1,225 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block style %}
+<style>
+    .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        /*width: 50%;*/
+    }
+
+    #width50 {
+        width: 50%;
+    }
+
+    td {
+        border: 1px solid #ddd;
+        text-align: center;
+        padding: 2px;
+        font-size: 9pt;
+    }
+    th {
+        border: 1px solid #ddd;
+        text-align: center;
+        padding: 5px;
+        font-size: 9pt;
+    }
+    tr:nth-child(even){background-color: #f2f2f2;}
+    tr:hover {background-color: #ddd;}
+
+    table {
+        margin: auto;
+    }
+</style>
+{% endblock %}
+
+{# ****************************************************************************************************************** #}
+{# *** SCRIPTS *** #}
+{# ****************************************************************************************************************** #}
+{% block scripts %}
+<script>
+    // canvas is not available immediately you are not able to draw picture before on load.
+    var scale = 4;
+    var canvas;
+    var ctx;
+    var background = new Image();
+    var selectedX = 0;
+    var selectedY = 0;
+    background.src = "{% static "wildcat/map.png" %}"
+
+    var xs = {{ xs |json }};
+    var ys = {{ ys |json }};
+    var values = {{ values |json }};
+
+    document.addEventListener("mousemove", mouseMoveHandler);
+    document.addEventListener("mousedown", mouseDownHandler);
+
+
+    $(document).ready(function(){
+        $(".input").change(function(){
+            selectedX = document.getElementById("selectedX").value;
+            selectedY = document.getElementById("selectedY").value;
+            initialize();
+            markPoint(selectedX,selectedY);
+        });
+    });
+
+    window.onload = initialize;
+
+    function initialize()
+    {
+        canvas = document.getElementById("myCanvas");
+        canvas.width = 100*scale;
+        canvas.height = 100*scale;
+        ctx = canvas.getContext("2d");
+        ctx.drawImage(background, 0, 0);
+        for(var i = 0; i < values.length; i++)
+        {
+            markPoint(xs[i],ys[i],values[i]);
+        }
+    }
+
+    function markPoint(x,y,value="")
+    {
+        ctx.font = "11px Arial";
+        ctx.fillStyle = "#0095DD";
+        ctx.fillText(value, x*scale, y*scale);
+        ctx.beginPath();
+        ctx.rect((x-1)*scale, (y-1)*scale, scale, scale);
+        if (value==="")
+        {
+            ctx.fillStyle = "purple";
+        }
+        else
+        {
+            ctx.fillStyle = "black";
+        }
+        ctx.fill();
+        ctx.closePath();
+    }
+
+    function mouseMoveHandler(e) {
+        var PosX = e.clientX - canvas.offsetLeft;
+        var PosY = e.clientY - canvas.offsetTop;
+        if (PosX > 0 && PosX < canvas.width && PosY > 0 && PosY < canvas.height)
+        {
+            document.getElementById("currentX").innerHTML = Math.ceil(PosX/scale);
+            document.getElementById("currentY").innerHTML = Math.ceil(PosY/scale);
+        }
+    }
+
+    function mouseDownHandler(e) {
+        var PosX = e.clientX - canvas.offsetLeft;
+        var PosY = e.clientY - canvas.offsetTop;
+        if (PosX > 0 && PosX < canvas.width && PosY > 0 && PosY < canvas.height)
+        {
+            xvalue = Math.ceil(PosX/scale);
+            yvalue = Math.ceil(PosY/scale);
+            document.getElementById("selectedX").value = xvalue;
+            document.getElementById("selectedY").value = yvalue;
+            initialize();
+            markPoint(xvalue,yvalue);
+        }
+    }
+
+    function checkInput() {
+        var x, y;
+
+        // Get the value of the input field with id
+        x = document.getElementById("selectedX").value;
+        y = document.getElementById("selectedY").value;
+
+        // If x is Not a Number or less than one or greater than 100
+        if (isNaN(x) || x < 1 || x > 100 || isNaN(y) || y < 1 || y > 100)  {
+            alert("Please provide valid values for x and y");
+        }
+    }
+
+</script>
+{% endblock %}
+
+
+{# ****************************************************************************************************************** #}
+{# *** TITLE *** #}
+{# ****************************************************************************************************************** #}
+{% block title %}
+{% endblock %}
+
+
+{# ****************************************************************************************************************** #}
+{# *** CONTENT *** #}
+{# ****************************************************************************************************************** #}
+
+{% block content %}
+
+<body>
+<p style="font-size:16px"> <strong>  Round {{ player.round_in_interaction }}</strong>  </p>
+<p>Please select the location that you want to drill by clicking the mouse at the desired location or by directly type in the coordinates in the textboxes below.
+    Note: if you do not submit your decision within the time limit, your earnings for that round is 0 point.
+</p>
+
+<div style="width: 50%; float:left">
+    <p style="font-size:9pt">
+        Current position:
+        X=<span id="currentX">currenct X</span>,
+        Y=<span id="currentY">currenct Y</span></p>
+
+    <canvas id="myCanvas" width="400" height="400" class="center"> </canvas>
+
+    <p>Selected position:
+        <input type="number" name="x" min="1" max="100" id="selectedX" class="input" value="0">
+        <input type="number" name="y" min="1" max="100" id="selectedY" class="input" value="0">
+    <div style="text-align:right" id="submit">
+        <button class="otree-btn-next btn btn-primary" onclick="checkInput()">Submit</button>
+    </div>
+    </p>
+</div>
+
+{# ****** History ********* #}
+<div style="width: 50%; float:right">
+    {% if player.round_in_interaction != 1 %}
+    <h5 style="text-align:center">
+        History
+    </h5>
+    <table class="table" style="text-align:center">
+
+        {% if player.treatment == "non" %}
+        <tr> <th>Round</th> <th>(x,y)</th> <th>Earnings</th><th>Total Earnings</th> </tr>
+        {% for p in player.in_previous_rounds %} {% if p.interaction_number == player.interaction_number %}
+        <tr> <td>{{ p.round_in_interaction}}</td> <td>({{ p.x }}, {{ p.y }})</td> <td>{{ p.value }}</td> <td>{{ p.cum_value }}</td> </tr>
+        {% endif %} {% endfor %}
+        {% endif %}
+
+        {% if player.treatment == "avg" %}
+        <tr><th>Round</th><th> ( x , y ) </th><th>Earnings</th><th>Total Earnings</th><th>Average Earnings</th></tr>
+        {% for p in player.in_previous_rounds %} {% if p.interaction_number == player.interaction_number %}
+        <tr><td>{{ p.round_in_interaction}}</td> <td>({{ p.x }}, {{ p.y }})</td> <td>{{ p.value }}</td>
+            <td>{{ p.cum_value }}</td><td>{{ p.info }}</td> </tr>
+        {% endif %} {% endfor %}
+        {% endif %}
+
+        {% if player.treatment == "min" %}
+        <tr> <th>Round</th> <th> ( x , y ) </th> <th>Earnings</th><th>Total Earnings</th><th>Min Earnings</th> </tr>
+        {% for p in player.in_previous_rounds %} {% if p.interaction_number == player.interaction_number %}
+        <tr> <td>{{ p.round_in_interaction}}</td> <td>({{ p.x }}, {{ p.y }})</td> <td>{{ p.value }}</td>
+            <td>{{ p.cum_value }}</td><td>{{ p.info }}</td> </tr>
+        {% endif %} {% endfor %}
+        {% endif %}
+
+        {% if player.treatment == "max" %}
+        <tr> <th>Round</th> <th> ( x , y ) </th> <th>Earnings</th><th>Total Earnings</th><th>Max Earnings</th> </tr>
+        {% for p in player.in_previous_rounds %} {% if p.interaction_number == player.interaction_number %}
+        <tr> <td>{{ p.round_in_interaction}}</td> <td>({{ p.x }}, {{ p.y }})</td> <td>{{ p.value }}</td>
+            <td>{{ p.cum_value }}</td> <td>{{ p.info }}</td></tr>
+        {% endif %} {% endfor %}
+        {% endif %}
+    </table>
+    {% endif %}
+</div>
+{# ****** History ********* #}
+
+</body>
+
+{% endblock %}
