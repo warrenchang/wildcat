@@ -72,7 +72,7 @@ REAL_WORLD_CURRENCY_CODE = '$'
 USE_POINTS = True
 POINTS_CUSTOM_NAME = ''
 REAL_WORLD_CURRENCY_DECIMAL_PLACES = 1
-POINTS_DECIMAL_PLACES = 1
+POINTS_DECIMAL_PLACES = 0
 
 # e.g. en, de, fr, it, ja, zh-hans
 # see: https://docs.djangoproject.com/en/1.9/topics/i18n/#term-language-code
