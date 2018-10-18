@@ -139,13 +139,13 @@
     td {
         border: 1px solid #ddd;
         text-align: center;
-        padding: 6px;
+        padding: 1px;
         font-size: 9pt;
     }
     th {
         border: 1px solid #ddd;
         text-align: center;
-        padding: 5px;
+        padding: 1px;
         font-size: 9pt;
     }
     tr:nth-child(even){background-color: #f2f2f2;}
@@ -163,9 +163,8 @@
 </p>
 
 <div style="width: 50%; float:left">
-
     <canvas id="myCanvas" width="400" height="400" class="center"> </canvas>
-    <p>Selected position: (x,y) = ({{ player.x }},{{ player.y }})
+    <p style="text-align:center">Selected location: (x,y) = ({{ player.x }},{{ player.y }}). Payoff: {{ player.value }}
     </p>
 </div>
 
@@ -178,14 +177,14 @@
     </h5>
     <table class="table" style="text-align:center">
         {% if player.treatment == "non" %}
-        <tr> <th>Round</th> <th> ( x , y ) </th> <th>Earnings</th><th>Total Earnings</th> </tr>
+        <tr> <th>Round</th> <th> ( x , y ) </th> <th>Payoff</th><th>Total Payoff</th> </tr>
         {% for p in player.in_all_rounds %} {% if p.interaction_number == player.interaction_number %}
         <tr> <td>{{ p.round_in_interaction}}</td> <td>({{ p.x }}, {{ p.y }})</td> <td>{{ p.value }}</td> <td>{{ p.cum_value }}</td> </tr>
         {% endif %} {% endfor %}
         {% endif %}
 
         {% if player.treatment == "avg" %}
-        <tr><th>Round</th><th> ( x , y ) </th><th>Earnings</th><th>Total Earnings</th><th>Average Earnings</th></tr>
+        <tr><th>Round</th><th> ( x , y ) </th><th>Payoff</th><th>Total Payoff</th><th>Average Payoff</th></tr>
         {% for p in player.in_all_rounds %} {% if p.interaction_number == player.interaction_number %}
         <tr><td>{{ p.round_in_interaction}}</td> <td>({{ p.x }}, {{ p.y }})</td> <td>{{ p.value }}</td>
             <td>{{ p.cum_value }}</td><td>{% if p.info != None %} {{ p.info }} {% endif %} </td> </tr>
@@ -193,7 +192,7 @@
         {% endif %}
 
         {% if player.treatment == "min" %}
-        <tr> <th>Round</th> <th> ( x , y ) </th> <th>Earnings</th><th>Total Earnings</th><th>Min Earnings</th> </tr>
+        <tr> <th>Round</th> <th> ( x , y ) </th> <th>Payoff</th><th>Total Payoff</th><th>Min Payoff</th> </tr>
         {% for p in player.in_all_rounds %} {% if p.interaction_number == player.interaction_number %}
         <tr> <td>{{ p.round_in_interaction}}</td> <td>({{ p.x }}, {{ p.y }})</td> <td>{{ p.value }}</td>
             <td>{{ p.cum_value }}</td><td>{% if p.info != None %} {{ p.info }} {% endif %}</td> </tr>
@@ -201,7 +200,7 @@
         {% endif %}
 
         {% if player.treatment == "max" %}
-        <tr> <th>Round</th> <th> ( x , y ) </th> <th>Earnings</th><th>Total Earnings</th><th>Max Earnings</th> </tr>
+        <tr> <th>Round</th> <th> ( x , y ) </th> <th>Payoff</th><th>Total Payoff</th><th>Max Payoff</th> </tr>
         {% for p in player.in_all_rounds %} {% if p.interaction_number == player.interaction_number %}
         <tr> <td>{{ p.round_in_interaction}}</td> <td>({{ p.x }}, {{ p.y }})</td> <td>{{ p.value }}</td>
             <td>{{ p.cum_value }}</td> <td>{% if p.info != None %} {{ p.info }} {% endif %} </td></tr>

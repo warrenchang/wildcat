@@ -173,11 +173,11 @@ SESSION_CONFIGS = [
     {
         'name': 'exploration_exploitation',
         'display_name': "exploration exploitation",
-        'num_demo_participants': 3,
+        'num_demo_participants': 1,
         'real_world_currency_per_point': 1 / 8,
         'participation_fee': 0,
         'debug': False,
-        'app_sequence': ["wildcat",
+        'app_sequence': ["wildcat", 'bret',
                          ]
     },
 

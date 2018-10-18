@@ -17,7 +17,7 @@ class Constants(BaseConstants):
     players_per_group = None
     values = np.random.random((100,100))*100
 
-    treatments = ['non', 'avg', 'min', 'max']
+    treatments = ['avg', 'avg', 'min', 'max']
 
     ## below is just for debug
     interactions = [
