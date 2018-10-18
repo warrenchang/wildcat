@@ -28,15 +28,7 @@
         <p>
             {% blocktrans trimmed %}
                 In the following, you will see a {{ num_rows }}x{{ num_cols }}-matrix containing
-                {{ num_boxes }} boxes on your screen.
-            {% endblocktrans %}
-        </p>
-        <p>
-            {% blocktrans trimmed %}
-                As soon as you start the task by hitting the 'Start' button,
-                one of the boxes is collected per second, starting from the top-left corner.
-                Once collected, the box marked by a tick symbol.
-                For each box collected you earn {{ box_value }} points.
+                {{ num_boxes }} boxes on your screen. You can earn points by collecting boxes.
             {% endblocktrans %}
         </p>
         <p>
@@ -49,24 +41,16 @@
         </p>
         <p>
             {% blocktrans trimmed %}
-                Your task is to choose the box you want to collect. When you decide you have collected enough bomb, you
-                can click "Stop", then check the results by hitting the 'Check' button.
-                A dollar sign or a bomb sign will be shown on each of your collected boxes.
+                If you collect the box where the bomb is located, the bomb will explode and you will earn zero.
+                If you stop before collecting the bomb, you gain the amount accumulated that far.
             {% endblocktrans %}
         </p>
         <p>
             {% blocktrans trimmed %}
-                If you collect the box where the bomb is located, the bomb will explode and you will earn zero.
-                If you does not collect the bomb, you gain the amount accumulated that far.
+                At the end of the task boxes are toggled by hitting the 'Solve' button.
+                A dollar sign or a fire symbol (for the bomb) will be shown on each of your collected boxes.
             {% endblocktrans %}
         </p>
-            <p>
-            {% blocktrans trimmed %}
-               You will play the game for {{ Constants.num_rounds }} rounds. One round will be randomly chosen at the end
-                to determine your payoff.
-            {% endblocktrans %}
-        </p>
-
 
     </div>
 

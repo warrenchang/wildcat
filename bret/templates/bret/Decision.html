@@ -59,7 +59,6 @@
 {# *** TITLE *** #}
 {# ****************************************************************************************************************** #}
 {% block title %}
-    {% trans "Your Decision" %}
 {% endblock %}
 
 
@@ -67,6 +66,7 @@
 {# *** CONTENT *** #}
 {# ****************************************************************************************************************** #}
 {% block content %}
+    <p> Choose the boxes you want to collect. </p>
     <div class="panel panel-primary">
             <div
                 id="bomb-task"
@@ -137,7 +137,7 @@
                             <label>
                                 {% trans "No. of boxes to collect:" %}
 
-                                <input 
+                                <input
                                     min="0" 
                                     type="number" 
                                     class="form-control"
@@ -175,7 +175,7 @@
                                 </span>
                             </button>
 
-                            <button 
+                            <button
                                 type="button"
                                 href="javascript:void(0)"
                                 class="btn btn-primary btn-md resolve"
@@ -183,7 +183,7 @@
                                 data-ng-click="bombTaskController.resolve()"
                                 data-ng-disabled="!bombTaskController.stopped">
                                 <span>
-                                    {% trans "Solve" %}
+                                    {% trans "Check" %}
                                 </span>
                             </button>
                         </div>

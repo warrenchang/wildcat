@@ -178,12 +178,15 @@
         <p>Selected location:
             <input type="number" name="x" min="1" max="100" id="selectedX" class="input" value="0">
             <input type="number" name="y" min="1" max="100" id="selectedY" class="input" value="0">
+        <div style="text-align:right" id="submit">
             <button class="otree-btn-next btn btn-primary" onclick="checkInput()">Submit</button>
+        </div>
         </p>
     </div>
 
     {# ****** History ********* #}
     <div style="width: 50%; float:right">
+        {% if player.round_in_interaction != 1 %}
             <h5 style="text-align:center">
                 History
             </h5>
@@ -220,6 +223,7 @@
                     {% endif %} {% endfor %}
                 {% endif %}
             </table>
+        {% endif %}
     </div>
     {# ****** History ********* #}
 
